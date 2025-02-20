@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { quizData } from '../data/questions';
 import { Link } from 'react-router-dom';
 
-const Quiz = () => {
+const Quiz: React.FC = () => {
   const [currentRound, setCurrentRound] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -57,10 +57,11 @@ const Quiz = () => {
   if (quizCompleted) {
     const percentage = Math.round((score / totalQuestions) * 100);
     const message = percentage >= 70 
-      ? "Parabéns, você realmente é uma verdadeira Fã de Supernatural, agora guarde a palavra-chave abaixo para desbloquear a próxima fase." 
+      ? "Parabéns, você realmente é uma verdadeira Fã de Supernatural, agora guarde a palavra-chave abaixo para desbloquear a próxima fase."
       : "Continue assistindo Supernatural e tente novamente!";
 
     const keyword = "IMPALA67"; // Palavra-chave temática (Carro do Dean)
+    
 
     return (
       <div 

@@ -1,6 +1,8 @@
 import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Quiz from './components/Quiz';
 import LockIcon from './components/LockIcon';
+import PasswordCheck from './components/PasswordCheck';
+import SupernaturalPuzzle from './components/SupernaturalPuzzle';
 
 function App() {
   return (
@@ -35,15 +37,12 @@ function App() {
                 </Link>
 
                 {/* Fase 2 */}
-                <div className="relative mb-6">
-                  <button 
-                    disabled
-                    className="horror-text block w-full bg-gray-800/80 text-gray-500 text-2xl py-4 px-8 rounded border-2 border-gray-700 cursor-not-allowed"
-                  >
-                    Fase 2: Bloqueada
-                  </button>
-                  <LockIcon />
-                </div>
+                <Link 
+                  to="/password-check" 
+                  className="horror-text block w-full bg-red-900/80 hover:bg-red-800 text-white text-2xl py-4 px-8 rounded border-2 border-red-700 shadow-[0_0_10px_rgba(255,0,0,0.5)] transition-all duration-300 hover:scale-105 mb-6"
+                >
+                  Fase 2: Supernatural Puzzle
+                </Link>
 
                 {/* Fase 3 */}
                 <div className="relative mb-8">
@@ -71,6 +70,8 @@ function App() {
           </div>
         } />
         <Route path="/quiz" element={<Quiz />} />
+        <Route path="/password-check" element={<PasswordCheck />} />
+        <Route path="/supernatural-puzzle" element={<SupernaturalPuzzle />} />
       </Routes>
     </Router>
   );
