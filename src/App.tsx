@@ -1,10 +1,27 @@
 import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { useState } from 'react';
 import Quiz from './components/Quiz';
-import LockIcon from './components/LockIcon';
 import PasswordCheck from './components/PasswordCheck';
 import SupernaturalPuzzle from './components/SupernaturalPuzzle';
+import BinaryChallenge from './components/BinaryChallenge';
+import FinalPresent from './components/FinalPresent';
 
 function App() {
+  const [presentMessage, setPresentMessage] = useState('');
+  const [showPresent, setShowPresent] = useState(false);
+
+  const correctMessage = "Minha Estrela Wayward Amada, tua alma é a Amala que ilumina minha eternidade. Em cada batalha e por todas as vidas, prometo ser teu Dean, assim como és meu Sam. Seguiremos juntos, meu amor infinito, e nossa paixão desafiará até o Vazio.";
+
+  const handlePresentSubmit = () => {
+    if (presentMessage.trim() === correctMessage.trim()) {
+      setShowPresent(true);
+    }
+  };
+
+  if (showPresent) {
+    return <FinalPresent />;
+  }
+
   return (
     <Router>
       <Routes>
@@ -45,25 +62,27 @@ function App() {
                 </Link>
 
                 {/* Fase 3 */}
-                <div className="relative mb-8">
-                  <button 
-                    disabled
-                    className="horror-text block w-full bg-gray-800/80 text-gray-500 text-2xl py-4 px-8 rounded border-2 border-gray-700 cursor-not-allowed"
-                  >
-                    Fase 3: Bloqueada
-                  </button>
-                  <LockIcon />
-                </div>
+                <Link 
+                  to="/binary-challenge" 
+                  className="horror-text block w-full bg-red-900/80 hover:bg-red-800 text-white text-2xl py-4 px-8 rounded border-2 border-red-700 shadow-[0_0_10px_rgba(255,0,0,0.5)] transition-all duration-300 hover:scale-105 mb-6"
+                >
+                  Fase 3: Enigma Binário
+                </Link>
 
                 {/* Botão Receber Presente */}
-                <div className="relative">
-                  <button 
-                    disabled
-                    className="horror-text block w-full bg-gray-800/80 text-gray-500 text-2xl py-4 px-8 rounded border-2 border-gray-700 cursor-not-allowed"
+                <div className="space-y-4">
+                  <textarea
+                    className="w-full horror-text bg-black/50 border-2 border-red-700 text-white p-4 rounded h-32"
+                    placeholder="Cole aqui a frase secreta para receber seu presente..."
+                    value={presentMessage}
+                    onChange={(e) => setPresentMessage(e.target.value)}
+                  />
+                  <button
+                    onClick={handlePresentSubmit}
+                    className="horror-text block w-full bg-red-900/80 hover:bg-red-800 text-white text-2xl py-4 px-8 rounded border-2 border-red-700 shadow-[0_0_10px_rgba(255,0,0,0.5)] transition-all duration-300 hover:scale-105"
                   >
                     Receber Presente
                   </button>
-                  <LockIcon />
                 </div>
               </div>
             </div>
@@ -72,6 +91,7 @@ function App() {
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/password-check" element={<PasswordCheck />} />
         <Route path="/supernatural-puzzle" element={<SupernaturalPuzzle />} />
+        <Route path="/binary-challenge" element={<BinaryChallenge />} />
       </Routes>
     </Router>
   );

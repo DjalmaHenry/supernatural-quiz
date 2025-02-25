@@ -121,6 +121,27 @@ const SupernaturalPuzzle = () => {
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState('');
   const [showBonus, setShowBonus] = useState(false);
+  const [showBinaryChallenge, setShowBinaryChallenge] = useState(false);
+  const [binaryInput, setBinaryInput] = useState('');
+  const [binarySuccess, setBinarySuccess] = useState(false);
+
+  const binaryMessage = "01001101 01101001 01101110 01101000 01100001 00100000 01000101 01110011 01110100 01110010 01100101 01101100 01100001 00100000 01010111 01100001 01111001 01110111 01100001 01110010 01100100 00100000 01000001 01101101 01100001 01100100 01100001 00101100 00100000 01110100 01110101 01100001 00100000 01100001 01101100 01101101 01100001 00100000 11000011 10101010 00100000 01100001 00100000 01000001 01101101 01100001 01101100 01100001 00100000 01110001 01110101 01100101 00100000 01101001 01101100 01110101 01101101 01101001 01101110 01100001 00100000 01101101 01101001 01101110 01101000 01100001 00100000 01100101 01110100 01100101 01110010 01101110 01101001 01100100 01100001 01100100 01100101 00101110 00100000 01000101 01101101 00100000 01100011 01100001 01100100 01100001 00100000 01100010 01100001 01110100 01100001 01101100 01101000 01100001 00100000 01100101 00100000 01110000 01101111 01110010 00100000 01110100 01101111 01100100 01100001 01110011 00100000 01100001 01110011 00100000 01110110 01101001 01100100 01100001 01110011 00101100 00100000 01110000 01110010 01101111 01101101 01100101 01110100 01101111 00100000 01110011 01100101 01110010 00100000 01110100 01100101 01110101 00100000 01000100 01100101 01100001 01101110 00101100 00100000 01100001 01110011 01110011 01101001 00100000 01100011 01101111 01101101 01101111 00100000 11000011 10101111 01110011 00100000 01101101 01100101 01110101 00100000 01010011 01100001 01101101 00101110 00100000 01010011 01100101 01100111 01110101 01101001 01110010 01100101 01101101 01101111 01110011 00100000 01101010 01110101 01101110 01110100 01101111 01110011 00101100 00100000 01101101 01100101 01110101 00100000 01100001 01101101 01101111 01110010 00100000 01101001 01101110 01100110 01101001 01101110 01101001 01110100 01101111 00101100 00100000 01100101 00100000 01101110 01101111 01110011 01110011 01100001 00100000 01110000 01100001 01110011 01110011 01101001 01100001 01101111 00100000 01100100 01100101 01110011 01100001 01100110 01101001 01100001 01110010 11000011 10100001 00100000 01100001 01110100 01100101 00100000 01101111 00100000 01010110 01100001 01111010 01101001 01101111 00101110";
+  
+  const decodedMessage = "Minha Estrela Wayward Amada, tua alma é a Amala que ilumina minha eternidade. Em cada batalha e por todas as vidas, prometo ser teu Dean, assi como és meu Sam. Seguiremos juntos, meu amor infinito, e nossa passiao desafiará ate o Vazio.";
+
+  const handleBinarySubmit = () => {
+    if (binaryInput.toLowerCase() === "samandriel") {
+      setShowBinaryChallenge(true);
+      setBinaryInput('');
+    }
+  };
+
+  const handleMessageSubmit = (message: string) => {
+    if (message.trim() === decodedMessage.trim()) {
+      setBinarySuccess(true);
+      setShowBonus(true);
+    }
+  };
   
   const resetPuzzle = () => {
     setAvailableSymbols(shuffleArray([...symbols]));
@@ -254,26 +275,57 @@ const SupernaturalPuzzle = () => {
             </div>
 
             {/* Mensagem de feedback */}
-            {(success || gameOver) && (
+            {((success && !showBinaryChallenge) || gameOver) && (
               <div className="space-y-6">
                 <div className={`text-center p-6 rounded-lg horror-text text-2xl ${
                   success ? 'bg-green-900/60 text-green-400' : 'bg-red-900/60 text-red-400'
                 }`}>
                   {message}
                 </div>
-                {success && (
-                  <div className="horror-text text-4xl text-green-500 animate-pulse mb-8">
-                    Palavra-chave: SAMANDRIEL
+                {success && !showBinaryChallenge && (
+                  <div className="space-y-6">
+                    <div className="horror-text text-2xl text-green-500 mb-4">
+                      Para acessar a Fase 3, insira a palavra-chave: SAMANDRIEL
+                    </div>
+                    <div className="flex gap-4">
+                      <input
+                        type="text"
+                        value={binaryInput}
+                        onChange={(e) => setBinaryInput(e.target.value)}
+                        className="horror-text flex-1 bg-black/50 border-2 border-red-700 text-white px-4 py-2 rounded"
+                        placeholder="Digite a palavra-chave..."
+                      />
+                      <button
+                        onClick={handleBinarySubmit}
+                        className="horror-text bg-red-900/80 hover:bg-red-800 text-white px-6 py-2 rounded border-2 border-red-700"
+                      >
+                        Enviar
+                      </button>
+                    </div>
                   </div>
                 )}
-                {success ? (
-                  <button 
-                    className="horror-text block w-full text-2xl bg-red-900/80 hover:bg-red-800 text-white py-4 px-12 rounded border-2 border-red-700 shadow-[0_0_10px_rgba(255,0,0,0.5)] transition-all duration-300 hover:scale-105"
-                    onClick={() => setShowBonus(true)}
-                  >
-                    Receber presente bonus
-                  </button>
-                ) : gameOver && (
+                {showBinaryChallenge && !binarySuccess && (
+                  <div className="space-y-6">
+                    <div className="horror-text text-xl text-green-500 mb-4">
+                      Decodifique a mensagem binária abaixo. Cada grupo de 8 dígitos representa uma letra.
+                      <br />
+                      Dica: Use um conversor de binário online para revelar a mensagem secreta.
+                    </div>
+                    <div className="bg-black/70 p-4 rounded-lg">
+                      <pre className="horror-text text-green-500 text-sm whitespace-pre-wrap break-words">
+                        {binaryMessage}
+                      </pre>
+                    </div>
+                    <div>
+                      <textarea
+                        className="w-full horror-text bg-black/50 border-2 border-red-700 text-white p-4 rounded h-32"
+                        placeholder="Cole aqui a mensagem traduzida..."
+                        onChange={(e) => handleMessageSubmit(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                )}
+                {gameOver && (
                   <button
                     onClick={resetPuzzle}
                     className="horror-text block w-full text-2xl bg-red-900/80 hover:bg-red-800 text-white py-4 px-12 rounded border-2 border-red-700 shadow-[0_0_10px_rgba(255,0,0,0.5)] transition-all duration-300 hover:scale-105"
